@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ProfileInfo.module.css";
+import { toggleIsFetching } from "../../../redux/users-reducer";
 
 class ProfileStatus extends React.Component {
   state = {
@@ -24,7 +25,23 @@ class ProfileStatus extends React.Component {
       status: e.currentTarget.value,
     });
   };
+
+  componentDidUpdate (prevProps, prevState) {
+    
+    if(prevProps.status !== this.props.status) {
+      this.setState({
+        status: this.props.status
+      });
+    }
+    
+    
+
+    console.log("componentDidUpdate")
+  }
+
+  
   render() {
+    console.log("render")
     return (
       <div>
         {!this.state.editMode && (
