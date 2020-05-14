@@ -45,3 +45,13 @@ export const authAPI = {
     return instance.get(`auth/me`);
   },
 };
+
+export const loginAuthAPI = {
+  Authorize() {
+    return instance.post(`auth/login`);
+  },
+
+  UnAuthorize() {
+    return instance.delete(`auth/login`);
+  },
+};
