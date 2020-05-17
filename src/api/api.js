@@ -44,14 +44,12 @@ export const authAPI = {
   me() {
     return instance.get(`auth/me`);
   },
-};
-
-export const loginAuthAPI = {
-  Authorize() {
-    return instance.post(`auth/login`);
+  login(email, password, rememberMe = false){
+    return instance.post(`auth/login`, { email, password, rememberMe });
   },
 
-  UnAuthorize() {
+  logout(){
     return instance.delete(`auth/login`);
-  },
+  }
 };
+
