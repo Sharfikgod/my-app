@@ -1,17 +1,13 @@
-import {authAPI} from "./../api/api";
-import {stopSubmit} from "redux-form";
-
+import { authAPI } from "./../api/api";
+import { stopSubmit } from "redux-form";
 
 const SET_USERS_DATA = "SET_USERS_DATA";
 
-
 let initialiState = {
-    userId: null,
-    email: null,
-    login: null,
-    isAuth: false,
-    
-
+  userId: null,
+  email: null,
+  login: null,
+  isAuth: false,
 };
 
 const authReducer = (state = initialiState, action) => {
@@ -21,44 +17,47 @@ const authReducer = (state = initialiState, action) => {
         ...state,
         ...action.payload,
       };
-    
+
     default:
       return state;
   }
 };
 
-export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_USERS_DATA, payload: {userId, email, login, isAuth} });
+export const setAuthUserData = (userId, email, login, isAuth) => ({
+  type: SET_USERS_DATA,
+  payload: { userId, email, login, isAuth },
+});
 
 export const getAuthUserData = () => (dispatch) => {
-  authAPI.me() 
-  .then((response) => {
-   if (response.data.resultCode === 0) {
-       let {id, login, email } = response.data.data;
-       dispatch(setAuthUserData(id, email, login, true));
-   }
+  return authAPI.me().then(response => {
+    if (response.data.resultCode === 0) {
+      let { id, login, email } = response.data.data;
+      dispatch(setAuthUserData(id, email, login, true));
+    }
   });
-}
+};
 
 export const login = (email, password, rememberMe) => (dispatch) => {
-   
-  authAPI.login(email, password, rememberMe) 
-  .then((response) => {
-   if (response.data.resultCode === 0) {
-     dispatch(getAuthUserData())
+  
+  authAPI.login(email, password, rememberMe).then((response) => {
+    if (response.data.resultCode === 0) {
+      dispatch(getAuthUserData());
     } else {
-     let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
-      dispatch(stopSubmit("login", {_error: message}));
-   }
+      let message =
+        response.data.messages.length > 0
+          ? response.data.messages[0]
+          : "Some error";
+      dispatch(stopSubmit("login", { _error: message }));
+    }
   });
-}
+};
 
 export const logout = () => (dispatch) => {
-  authAPI.logout() 
-  .then((response) => {
-   if (response.data.resultCode === 0) {
-    dispatch(setAuthUserData(null, null, null, false));
-   }
+  authAPI.logout().then((response) => {
+    if (response.data.resultCode === 0) {
+      dispatch(setAuthUserData(null, null, null, false));
+    }
   });
-}
+};
 
 export default authReducer;
