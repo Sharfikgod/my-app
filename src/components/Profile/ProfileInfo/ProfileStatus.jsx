@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./ProfileInfo.module.css";
-import { toggleIsFetching } from "../../../redux/users-reducer";
 
 class ProfileStatus extends React.Component {
   state = {
